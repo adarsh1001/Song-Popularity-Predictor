@@ -18,14 +18,13 @@ n_timesteps = 100
 # reshape input and output data to be suitable for LSTMs.
 # i.e. (no. of samples, no. of timesteps, no. os features per timestep)
 X = X.reshape(1, n_timesteps, 1)
-y = y.reshape(1, n_timesteps, 1)
 
 #Define the LSTM model
 
 model = Sequential()
-model.add(Bidirectional(LSTM(20, return_sequences=True), input_shape=(n_timesteps, 1)))
-model.add(TimeDistributed(Dense(1, activation='sigmoid')))
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.add(Bidirectional(LSTM(100)))
+model.add(Dense(3, activation='softmax'))
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train LSTM
 model.fit(X, y, epochs=50, batch_size=32, verbose=1)
