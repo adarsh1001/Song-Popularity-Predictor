@@ -3,7 +3,10 @@ import os
 import numpy as np
 import hdf5_getters
 
-Features = ['analysis_sample_rate', 'artist_7digitalid', 'artist_familiarity', 'artist_hotttnesss', 'artist_id', 'artist_latitude', 'artist_location', 'artist_longitude', 'artist_mbid', 'artist_mbtags', 'artist_mbtags_count', 'artist_name', 'artist_playmeid', 'artist_terms', 'artist_terms_freq', 'artist_terms_weight', 'audio_md5', 'bars_confidence', 'bars_start', 'beats_confidence', 'beats_start', 'danceability', 'duration', 'end_of_fade_in', 'energy', 'key', 'key_confidence', 'loudness', 'mode', 'mode_confidence', 'release', 'release_7digitalid', 'sections_confidence', 'sections_start', 'segments_confidence', 'segments_loudness_max', 'segments_loudness_max_time', 'segments_loudness_start', 'segments_pitches', 'segments_start', 'segments_timbre', 'similar_artists', 'song_hotttnesss', 'song_id', 'start_of_fade_out', 'tatums_confidence', 'tatums_start', 'tempo', 'time_signature', 'time_signature_confidence', 'title', 'track_id', 'track_7digitalid', 'year']
+from geopy.geocoders import Nominatim
+import pycountry as pc
+
+Features = ['analysis_sample_rate', 'artist_familiarity', 'artist_hotttnesss', 'artist_latitude', 'artist_location', 'artist_longitude', 'artist_mbid', 'artist_mbtags', 'artist_mbtags_count', 'artist_name', 'artist_playmeid', 'artist_terms', 'artist_terms_freq', 'artist_terms_weight', 'audio_md5', 'bars_confidence', 'bars_start', 'beats_confidence', 'beats_start', 'danceability', 'duration', 'end_of_fade_in', 'energy', 'key', 'key_confidence', 'loudness', 'mode', 'mode_confidence', 'release', 'release_7digitalid', 'sections_confidence', 'sections_start', 'segments_confidence', 'segments_loudness_max', 'segments_loudness_max_time', 'segments_loudness_start', 'segments_pitches', 'segments_start', 'segments_timbre', 'similar_artists', 'song_hotttnesss', 'song_id', 'start_of_fade_out', 'tatums_confidence', 'tatums_start', 'tempo', 'time_signature', 'time_signature_confidence', 'title', 'track_id', 'track_7digitalid', 'year']
 
 def lablify():
     f=open('MSD_DATASET.txt', 'a')
@@ -15,9 +18,24 @@ def lablify():
     f.write(outstring)
     f.close()
 
+def populate_country_ids():
+    c_ids = {};
+
+    i = 0;
+    for item in list(pc.countries):
+        c_ids[str(item.alpha_2).lower()] = i;
+        i += 1;
+
+    return c_ids;
+
+def get_country(lat, lon):
+    geolocator = Nominatim()
+    location = geolocator.reverse(str(lat) + ", " + str(lon));
+
+    return str(location.raw['address']['country_code']).lower();
 
 
-if __name__ == '__main__':
+if __name__ == '__main___':
     dataset_dir = sys.argv[1]
 
     lablify()
