@@ -9,6 +9,7 @@ Bag_Words={} #Complete BoW
 Final_BoW={} #Pruned BoW
 feat=[]
 
+
 def Lablify():
     f=open('AMSD_DATASET.txt', 'a')
     outstring=''
