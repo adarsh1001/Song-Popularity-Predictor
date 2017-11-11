@@ -68,7 +68,7 @@ def Frequency(l, arg):
 
 def Prune(count):
     #We take top 50 out of all BoW keywords
-    print "Pruning BoW"
+    print "Pruning BoW..."
     for i in range(50):
         ind = np.argmax(count)
         for j in Bag_Words:
@@ -116,11 +116,13 @@ def main():
 
                     temp = hdf5_getters.get_bars_confidence(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_beats_confidence(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
@@ -158,31 +160,37 @@ def main():
 
                     temp = hdf5_getters.get_sections_confidence(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_confidence(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_loudness_max(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_loudness_max_time(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_pitches(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_timbre(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
@@ -194,6 +202,7 @@ def main():
 
                     temp = hdf5_getters.get_tatums_confidence(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     MeanVar(temp)
 
@@ -225,6 +234,7 @@ def main():
 
                     temp = hdf5_getters.get_artist_terms(h5)
                     if temp.size == 0:
+                        h5.close()
                         continue
                     temp_ = hdf5_getters.get_artist_terms_weight(h5)
                     if temp_.size == 0:
