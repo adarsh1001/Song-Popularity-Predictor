@@ -11,7 +11,7 @@ feat=[]
 
 
 def Lablify():
-    f=open('AMSD_DATASET.txt', 'a')
+    f=open('MSD_DATASET.txt', 'a')
     outstring=''
     for i in Features:
         outstring+=i
@@ -252,7 +252,7 @@ def main():
 
 
                     count = 1
-                    f=open('AMSD_DATASET.txt', 'a')
+                    f=open('MSD_DATASET.txt', 'a')
                     outstring=''
                     for i in feat:
                         outstring+=str(i)
