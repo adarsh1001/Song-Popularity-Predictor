@@ -4,7 +4,7 @@ import numpy as np
 import hdf5_getters
 import math
 
-Features = ['artist_hotttnesss', 'artist_familiarity', 'bars_conf_mean', 'bars_conf_var', 'beats_conf_mean', 'beats_conf_var', 'duration', 'end_of_fade_in', 'key', 'key_conf', 'loudness', 'mode', 'mode_conf', 'sections_conf_mean', 'sections_conf_var', 'segments_conf_mean', 'segments_conf_var', 'segments_loudness_max_mean', 'segments_loudness_max_var', 'segments_loudness_max_time_mean', 'segments_loudness_max_time_var', 'segments_pitches_mean', 'segments_pitches_var', 'segments_timbre_mean', 'segments_timbre_var', 'start_of_fade_out', 'tatums_conf_mean', 'tatums_conf_var', 'tempo', 'time_sign', 'time_sign_conf', 'year', 'song_hotttnesss']
+Features = ['artist_hotttnesss', 'artist_familiarity', 'bars_conf_mean', 'bars_conf_var', 'beats_conf_mean', 'beats_conf_var', 'duration', 'end_of_fade_in', 'key', 'key_conf', 'loudness', 'mode', 'mode_conf', 'sections_conf_mean', 'sections_conf_var', 'segments_conf_mean', 'segments_conf_var', 'segments_loudness_max_mean', 'segments_loudness_max_var', 'segments_loudness_max_time_mean', 'segments_loudness_max_time_var', 'segments_pitches_mean', 'segments_pitches_var', 'segments_timbre_mean', 'segments_timbre_var', 'start_of_fade_out', 'tatums_conf_mean', 'tatums_conf_var', 'tempo', 'time_sign', 'time_sign_conf', 'year']
 Bag_Words={} #Complete BoW
 Final_BoW={} #Pruned BoW
 feat=[]
@@ -19,6 +19,7 @@ def Lablify():
     for i in Final_BoW:
         outstring+=i
         outstring+=','
+    outstring+='song_hotttnesss'
     outstring+='\n'
     f.write(outstring)
     f.close()
@@ -226,11 +227,6 @@ def main():
                         continue
                     feat.append(temp)
 
-                    temp = hdf5_getters.get_song_hotttnesss(h5)
-                    if (math.isnan(temp)):
-                        h5.close()
-                        continue
-                    feat.append(temp)
 
                     temp = hdf5_getters.get_artist_terms(h5)
                     if temp.size == 0:
@@ -247,6 +243,19 @@ def main():
                         else:
                             x = 0.0
                             feat.append(x)
+
+                    temp = hdf5_getters.get_song_hotttnesss(h5)
+                    if (math.isnan(temp)):
+                        h5.close()
+                        continue
+                    hott = 0
+                    if temp >=0.75:
+                        hott = 1
+                    elif temp >=0.40 and temp <0.75:
+                        hott = 2
+                    else:
+                        hott = 3
+                    feat.append(hott)
 
                     h5.close()
 
