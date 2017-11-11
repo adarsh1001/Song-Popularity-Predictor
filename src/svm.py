@@ -1,5 +1,4 @@
 
-
 from sklearn import svm
 from sklearn import preprocessing
 from sklearn.model_selection import StratifiedShuffleSplit
@@ -30,13 +29,9 @@ def get_input_data(filename):
 
     """
 
-    X = []; Y = []
-    with open(filename, 'r') as f:
-        for line in f:
-            line = line.strip().split(',')
-            Y.append(line[0])
-            X.append([float(x) for x in line[1:]])
-    X = np.asarray(X); Y = np.asarray(Y)
+    dataset = np.genfromtxt(filename, delimiter=',')[:,:-1]
+    x = dataset[:,0:82];
+    y = dataset[:, 82];
 
 
     """
@@ -46,13 +41,13 @@ def get_input_data(filename):
 
     # YOUR CODE GOES HERE
     scaler  = preprocessing.StandardScaler()
-    X = scaler.fit_transform(X)
+    X = scaler.fit_transform(x)
 
     """
     ===========================================================================
     """
 
-    return X, Y
+    return X, y
 
 def calculate_metrics(predictions, labels):
     """
@@ -102,7 +97,7 @@ def SVM(train_data,
         train_labels,
         test_data,
         test_labels,
-        kernel='linear'):
+        kernel='rbf'):
     """
     Function to create, train and test the one-vs-all SVM using scikit-learn.
 
@@ -186,7 +181,7 @@ if __name__ == '__main__':
         #print "Usage: python letter_classification_svm.py --data_dir='<dataset dir path>'"
         sys.exit()
     else:
-        filename = os.path.join(args.data_dir, 'letter_classification_train.data')
+        filename = os.path.join(args.data_dir, 'MSD_DATASET.txt')
         try:
             if os.path.exists(filename):
                 pass
