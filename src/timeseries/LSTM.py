@@ -8,6 +8,7 @@ from keras.layers import LSTM
 from keras.layers import Dense
 from keras.layers import TimeDistributed
 from keras.layers import Bidirectional
+from keras.utils import np_utils
 
 #Read concatenated input arrays 
 
@@ -19,11 +20,13 @@ n_timesteps = 100
 # i.e. (no. of samples, no. of timesteps, no. os features per timestep)
 X = X.reshape(1, n_timesteps, 1)
 
+y = np_utils.to_categorical(y)
+num_classes = y.shape[1]
 #Define the LSTM model
 
 model = Sequential()
 model.add(LSTM(100))
-model.add(Dense(3, activation='softmax'))
+model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 # Train LSTM
