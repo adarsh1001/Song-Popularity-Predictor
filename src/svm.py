@@ -128,7 +128,7 @@ def SVM(train_data,
     """
 
     # YOUR CODE GOES HERE
-    clf  = svm.SVC(kernel=kernel, C=100.0, gamma = 0.1,coef0=0.0, random_state=None, tol =0.001)
+    clf  = svm.LinearSVC(penalty='l2',multi_class='ovr', C=100.0, random_state=None, tol =0.001)
     clf.fit(train_data, train_labels)
     train_predictions = clf.predict(test_data)
 
