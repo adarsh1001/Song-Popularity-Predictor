@@ -23,6 +23,7 @@ def Lablify():
     f.close()
 
 def Create_BoW(arg):
+    print "Forming Bag of Words..."
     listing1 = os.listdir(arg)
     for a in listing1:
         listing2 = os.listdir(arg+a+'/')
@@ -46,6 +47,7 @@ def Index_BoW(BoW):
     return index
 
 def Frequency(l, arg):
+    print "Getting Frequency Distribution of BoW..."
     arr = np.zeros(l)
     listing1 = os.listdir(arg)
     for a in listing1:
@@ -64,7 +66,8 @@ def Frequency(l, arg):
     return arr
 
 def Prune(count):
-    #We take top 100 out of all BoW keywords
+    #We take top 50 out of all BoW keywords
+    print "Pruning BoW"
     for i in range(50):
         ind = np.argmax(count)
         for j in Bag_Words:
@@ -76,7 +79,6 @@ def Prune(count):
 
 
 def MeanVar(temp):
-    temp = np.asarray(temp, dtype=np.float64)
     feat.append(np.mean(temp))
     feat.append(np.var(temp))
 
@@ -88,7 +90,7 @@ def main():
     count = Frequency(Size_BoW, dataset_dir)
     Size_BoW = Prune(count)
     Lablify()
-
+    print "Forming Dataset..."
     listing1 = os.listdir(dataset_dir)
     for a in listing1:
         listing2 = os.listdir(dataset_dir+a+'/')
@@ -112,9 +114,13 @@ def main():
                     feat.append(temp)
 
                     temp = hdf5_getters.get_bars_confidence(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_beats_confidence(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
 
@@ -150,21 +156,33 @@ def main():
                     feat.append(temp)
 
                     temp = hdf5_getters.get_sections_confidence(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_confidence(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_loudness_max(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_loudness_max_time(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_pitches(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_segments_timbre(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_start_of_fade_out(h5)
@@ -174,6 +192,8 @@ def main():
                     feat.append(temp)
 
                     temp = hdf5_getters.get_tatums_confidence(h5)
+                    if temp.size == 0:
+                        continue
                     MeanVar(temp)
 
                     temp = hdf5_getters.get_tempo(h5)
@@ -203,6 +223,8 @@ def main():
                     feat.append(temp)
 
                     temp = hdf5_getters.get_artist_terms(h5)
+                    if temp.size == 0:
+                        continue
                     temp_ = hdf5_getters.get_artist_terms_weight(h5)
                     if temp_.size == 0:
                         continue
