@@ -18,7 +18,7 @@ if __name__ == '__main__':
 
 	for item in full_list:
 		temp = [];
-		artist_name = item['name'].encode('utf-8');
+		artist_name = item['name'].encode('ascii', 'ignore');
 
 		top_50_songs = rapid.call('LastFM', 'getTopArtistTracks', { 
 			'apiKey': '9c57fb1f3de3132bda349ef57801988d',
@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
 		print("Artist - %s" % artist_name);
 		for item2 in all_tracks:
-			temp_name = item2['name'].encode('utf-8');
+			temp_name = item2['name'].encode('ascii', 'ignore');
 			print("--%s" % temp_name);
 			temp_dict2 = {};
 
@@ -45,3 +45,6 @@ if __name__ == '__main__':
 		d_json[artist_name] = temp;
 
 	json.dump(d_json, downloaded);
+
+	os.chdir('pyAudioAnalysis');
+	os.system('python audioAnalysis.py dirMp3toWav -i ../../latest_songs/ -r 44100 -c');
