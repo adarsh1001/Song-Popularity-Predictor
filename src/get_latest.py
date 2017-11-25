@@ -6,7 +6,7 @@ rapid = RapidConnect("default-application_5a191a72e4b0d45349f766fe", "bc65de32-d
 
 if __name__ == '__main__':
 
-	downloaded = open('../latest_songs/downloaded_songs.json');
+	downloaded = open('../latest_songs/downloaded_songs.json', 'w+');
 	d_json = {};
 
 	artists = open('top_50_artists.json');
