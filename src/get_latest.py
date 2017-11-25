@@ -9,7 +9,9 @@ if __name__ == '__main__':
 	downloaded = open('../latest_songs/downloaded_songs.json');
 	d_json = {};
 
-	artists = open('top_50_artists.json');
+	artists = rapid.call('LastFM', 'getTopArtistsChart', { 
+		'apiKey': '9c57fb1f3de3132bda349ef57801988d' 
+	})
 	artists_json = json.load(artists);
 
 	full_list = artists_json['artists']['artist'];
@@ -36,8 +38,8 @@ if __name__ == '__main__':
 			temp_dict2['playcount'] = item2['playcount'];
 			temp_dict2['listeners'] = item2['listeners'];
 
-			if not os.path.isfile('../latest_songs/%s - %s.mp3' % (artist_name, temp_name)):
-				os.system('youtube-song-downloader "%s - %s"' % (artist_name, temp_name));
+			if not os.path.isfile('../latest_songs/%s-%s.mp3' % (artist_name, temp_name)):
+				os.system('youtube-song-downloader "%s-%s"' % (artist_name, temp_name));
 			temp.append(temp_dict2);
 
 		d_json[artist_name] = temp;
