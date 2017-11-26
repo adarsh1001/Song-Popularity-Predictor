@@ -10,7 +10,7 @@ from keras.layers import TimeDistributed
 from keras.layers import Bidirectional
 from keras.utils import np_utils
 
-
+import sys
 if __name__ == '__main__':
 	#Read concatenated input arrays 
 
@@ -31,8 +31,11 @@ if __name__ == '__main__':
 	       [0, 3, 1, 2],
 	       [0, 0, 1, 2]], dtype=int32)
 	'''
-
+	csv  = np.genfromtxt(sys.argv[1], delimiter=',')
+	print csv.shape
 	print "Features extraction done";
+
+	y  = np.genfromtxt(sys.argv[2])
 
 	y = np_utils.to_categorical(y)
 	num_classes = y.shape[1]
@@ -43,7 +46,7 @@ if __name__ == '__main__':
 	####128 is the embedding dimension.
 	#http://www.developintelligence.com/blog/2017/06/practical-neural-networks-keras-classifying-yelp-reviews/
 	model = Sequential()
-	model.add(Embedding(20000, 128, input_length=300))
+	model.add(Embedding(300, 128, input_length=30))
 	model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
 	model.add(Dense(num_classes, activation='softmax'))
 	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
