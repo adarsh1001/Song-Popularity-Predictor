@@ -270,11 +270,11 @@ def main():
                     f=open('MSD_DATASET.txt', 'a')
                     outstring=''
                     cnt = 0
-                    length = len(feat)
+                    feat_size = len(feat)
                     for i in feat:
                         cnt+=1
                         outstring+=str(i)
-                        if (cnt!=length)
+                        if (cnt!=feat_size)
                             outstring+=','
                     outstring+='\n'
                     f.write(outstring)
