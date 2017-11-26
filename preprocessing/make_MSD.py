@@ -110,7 +110,7 @@ def main():
                     feat.append(temp)
 
                     temp = hdf5_getters.get_artist_familiarity(h5)
-                    if (math.isnan(temp)):
+                    if (math.isnan(temp) or temp==0.0):
                         h5.close()
                         continue
                     feat.append(temp)
