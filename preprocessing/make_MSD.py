@@ -104,7 +104,7 @@ def main():
                     h5 = hdf5_getters.open_h5_file_read(dataset_dir+a+'/'+b+'/'+c+'/'+d)
                     feat = []
                     temp = hdf5_getters.get_artist_hotttnesss(h5)
-                    if (math.isnan(temp)):
+                    if (math.isnan(temp) or temp==0.0):
                         h5.close()
                         continue
                     feat.append(temp)
@@ -125,7 +125,13 @@ def main():
                     if temp.size == 0:
                         h5.close()
                         continue
-                    MeanVar(temp)
+                    mm = np.mean(temp)
+                    vv = np.var(temp)
+                    if mm==0.0 and vv==0.0:
+                    	h5.close()
+                        continue
+                    feat.append(mm)
+                    feat.append(vv)
 
 
                     feat.append(hdf5_getters.get_duration(h5))
@@ -245,7 +251,7 @@ def main():
                             feat.append(x)
 
                     temp = hdf5_getters.get_song_hotttnesss(h5)
-                    if (math.isnan(temp)):
+                    if (math.isnan(temp) or temp==0.0):
                         h5.close()
                         continue
                     hott = 0
