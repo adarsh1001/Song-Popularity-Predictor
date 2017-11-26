@@ -6,10 +6,14 @@ import numpy as np
 from keras.models import Sequential
 from keras.layers import LSTM
 from keras.layers import Dense
+from keras.layers import Dropout
 from keras.layers import TimeDistributed
 from keras.layers import Bidirectional
 from keras.utils import np_utils
-
+from keras.layers import Embedding
+from keras.optimizers import SGD
+from keras.layers import Conv1D
+from keras.layers import MaxPooling1D
 import sys
 if __name__ == '__main__':
 	#Read concatenated input arrays 
@@ -31,13 +35,15 @@ if __name__ == '__main__':
 	       [0, 3, 1, 2],
 	       [0, 0, 1, 2]], dtype=int32)
 	'''
-	csv  = np.genfromtxt(sys.argv[1], delimiter=',')
-	print csv.shape
+	X = np.genfromtxt(sys.argv[1], delimiter=',')
+	X = X.astype(int)
+	print X.shape
+	#X = np.reshape(X, (889,30,1))
 	print "Features extraction done";
 
-	y  = np.genfromtxt(sys.argv[2])
+	y_init  = np.genfromtxt(sys.argv[2])
 
-	y = np_utils.to_categorical(y)
+	y = np_utils.to_categorical(y_init)
 	num_classes = y.shape[1]
 	#Define the LSTM model
 
@@ -46,18 +52,38 @@ if __name__ == '__main__':
 	####128 is the embedding dimension.
 	#http://www.developintelligence.com/blog/2017/06/practical-neural-networks-keras-classifying-yelp-reviews/
 	model = Sequential()
-	model.add(Embedding(300, 128, input_length=30))
-	model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
+	model.add(Embedding(16, 128, input_length=30))
+	
+
+	
+	#model.add(Embedding(300, 128, input_length=30))
+	model.add(LSTM(128))
+	model.add(Dropout(0.2))
+	#model.add(LSTM(256))
+	#model.add(Dropout(0.2))
 	model.add(Dense(num_classes, activation='softmax'))
-	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+	opt = SGD(lr=0.0001)
+	model.compile(loss='categorical_crossentropy', optimizer='nadam', metrics=['accuracy'])
 
 	# Train LSTM
-	model.fit(X, y, epochs=50, batch_size=32, verbose=1)
+	model.fit(X, y,validation_split=0.1, epochs=100, batch_size=32, verbose=1)
 
 
 	# evaluate LSTM
+	X_test = np.genfromtxt(sys.argv[3], delimiter=',')
+	X_test = X_test.astype(int)
+	y_test = np.genfromtxt(sys.argv[4]);
+	y_test = np_utils.to_categorical(y_test);
 
-	yhat = model.predict_classes(X, verbose=0)
+	yhat = model.predict(X_test)
+	print yhat[0]
+	acc = 0.
+	count = 0
+	for i in range(len(yhat)):
+		print('Expected:', np.argmax(y_test[i]), 'Predicted', np.argmax(yhat[i]))
 
-	for i in range(n_timesteps):
-		print('Expected:', y[0, i], 'Predicted', yhat[0, i])
+		if (int(np.argmax(y_test[i])) == int(np.argmax(yhat[i]))):
+			count+=1
+	acc = float(count) / len(yhat)
+
+	print ("Accuracy: ", acc*100, " %")

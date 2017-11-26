@@ -6,7 +6,7 @@ rapid = RapidConnect("default-application_5a191a72e4b0d45349f766fe", "bc65de32-d
 
 if __name__ == '__main__':
 
-	downloaded = open('../latest_songs/downloaded_songs.json', 'w+');
+	downloaded = open('../latest_songs_2/downloaded_songs.json', 'w+');
 	d_json = {};
 
 	artists_json = rapid.call('LastFM', 'getTopArtistsChart', { 
@@ -23,7 +23,8 @@ if __name__ == '__main__':
 		top_50_songs = rapid.call('LastFM', 'getTopArtistTracks', { 
 			'apiKey': '9c57fb1f3de3132bda349ef57801988d',
 			'artist': artist_name,
-			'limit' : '20'
+			'limit' : '5',
+			'page' : '5'
 		});
 
 		all_tracks = top_50_songs['toptracks']['track'];
@@ -38,7 +39,7 @@ if __name__ == '__main__':
 			temp_dict2['playcount'] = item2['playcount'];
 			temp_dict2['listeners'] = item2['listeners'];
 
-			if not os.path.isfile('../latest_songs/%s-%s.mp3' % (artist_name, temp_name)):
+			if not os.path.isfile('../latest_songs_2/%s-%s.mp3' % (artist_name, temp_name)):
 				os.system('youtube-song-downloader "%s-%s"' % (artist_name, temp_name));
 			temp.append(temp_dict2);
 
@@ -46,5 +47,5 @@ if __name__ == '__main__':
 
 	json.dump(d_json, downloaded);
 
-	os.chdir('pyAudioAnalysis');
-	os.system('python audioAnalysis.py dirMp3toWav -i ../../latest_songs/ -r 44100 -c');
+	#os.chdir('pyAudioAnalysis');
+	#os.system('python audioAnalysis.py dirMp3toWav -i ../../latest_songs/ -r 44100 -c');
