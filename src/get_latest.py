@@ -9,10 +9,10 @@ if __name__ == '__main__':
 	downloaded = open('../latest_songs/downloaded_songs.json', 'w+');
 	d_json = {};
 
-	artists = rapid.call('LastFM', 'getTopArtistsChart', { 
+	artists_json = rapid.call('LastFM', 'getTopArtistsChart', { 
 		'apiKey': '9c57fb1f3de3132bda349ef57801988d' 
 	})
-	artists_json = json.load(artists);
+	#artists_json = json.loads(artists);
 
 	full_list = artists_json['artists']['artist'];
 
