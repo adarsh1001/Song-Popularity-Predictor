@@ -3,5 +3,5 @@ temp/
 .DS_Store
 latest_songs/
 *.pyc
-data/
+raw_data/
 MillionSongSubset/
