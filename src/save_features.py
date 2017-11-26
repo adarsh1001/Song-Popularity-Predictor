@@ -43,7 +43,7 @@ def get_playcount(name):
 
 if __name__ == '__main__':
 
-	[f, s, w] = am.dirWavFeatureExtractionNoAveraging('../%s/' % song_dir);
+	[f, s, w] = am.dirWavFeatureExtractionNoAveraging('../%s/' % song_dir);	
 
 	X = [];
 	y = [];
