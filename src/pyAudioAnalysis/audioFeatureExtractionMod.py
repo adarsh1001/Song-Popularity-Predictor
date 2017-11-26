@@ -798,7 +798,7 @@ def dirsWavFeatureExtraction(dirNames, mtWin, mtStep, stWin, stStep, computeBEAT
     return features, classNames, fileNames
 
 
-def dirWavFeatureExtractionNoAveraging(dirName, mtWin, mtStep, stWin, stStep):
+def dirWavFeatureExtractionNoAveraging(dirName):
     """
     This function extracts the mid-term features of the WAVE files of a particular folder without averaging each file.
 
@@ -825,13 +825,18 @@ def dirWavFeatureExtractionNoAveraging(dirName, mtWin, mtStep, stWin, stStep):
 
     for i, wavFile in enumerate(wavFilesList):
         [Fs, x] = audioBasicIO.readAudioFile(wavFile)            # read file
+        
+        mtWin = float(len(x))/(Fs*30);
+        mtStep = mtWin;
+        stWin = 1.0;
+        stStep = 1.0;
         if isinstance(x, int):
             continue        
         
         x = audioBasicIO.stereo2mono(x)                          # convert stereo to mono
         [MidTermFeatures, _] = mtFeatureExtraction(x, Fs, round(mtWin * Fs), round(mtStep * Fs), round(Fs * stWin), round(Fs * stStep))  # mid-term feature
 
-        MidTermFeatures = numpy.transpose(MidTermFeatures)
+        MidTermFeatures = numpy.transpose(MidTermFeatures)[0:30]
 #        MidTermFeatures = MidTermFeatures.mean(axis=0)        # long term averaging of mid-term statistics
         if len(allMtFeatures) == 0:                # append feature vector
             allMtFeatures = MidTermFeatures
@@ -858,16 +863,17 @@ def mtFeatureExtractionToFile(fileName, outPutFile, storeStFeatures=False, store
     c) write the mid-term feature sequences to a numpy file
     """
     [Fs, x] = audioBasicIO.readAudioFile(fileName)            # read the wav file
-    x = audioBasicIO.stereo2mono(x)                           # convert to MONO if required
 
-    midTermSize = (float(len(x))/Fs)/15;
-    midTermStep = midTermSize / 2;
+    midTermSize = Fs * (float(len(x))/Fs)/15;
+    midTermStep = Fs * midTermSize / 2;
 
-    shortTermSize = (float(len(x))/Fs)/30;
-    shortTermStep = shortTermSize / 2;
+    shortTermSize = Fs * (float(len(x))/Fs)/30;
+    shortTermStep = Fs * shortTermSize / 2;
+
+    x = audioBasicIO.stereo2mono(x)
 
     if storeStFeatures:
-        [mtF, stF] = mtFeatureExtraction(x, Fs, round(Fs * midTermSize), round(Fs * midTermStep), round(Fs * shortTermSize), round(Fs * shortTermStep))
+        [mtF, stF] = mtFeatureExtraction(x, Fs, round(midTermSize), round(midTermStep), round(shortTermSize), round(shortTermStep))
     else:
         [mtF, _] = mtFeatureExtraction(x, Fs, round(Fs*midTermSize), round(Fs * midTermStep), round(Fs * shortTermSize), round(Fs * shortTermStep))
 
