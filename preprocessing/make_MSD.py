@@ -263,9 +263,13 @@ def main():
                     count = 1
                     f=open('MSD_DATASET.txt', 'a')
                     outstring=''
+                    cnt = 0
+                    length = len(feat)
                     for i in feat:
+                        cnt+=1
                         outstring+=str(i)
-                        outstring+=','
+                        if (cnt!=length)
+                            outstring+=','
                     outstring+='\n'
                     f.write(outstring)
                     f.close()
