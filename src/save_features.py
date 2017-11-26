@@ -26,15 +26,15 @@ def get_playcount(name):
 		temp3 = key.split('.')[0].strip().lower();
 
 		if temp in name.lower() or temp2 in name.lower() or temp3 in name.lower():
-		for i in value:
-			t = i['song_name'].split(' ')[0].strip().lower();
-		t1 = i['song_name'].split(',')[0].strip().lower();
-		t2 = i['song_name'].split('.')[0].strip().lower();
+			for i in value:
+				t = i['song_name'].split(' ')[0].strip().lower();
+				t1 = i['song_name'].split(',')[0].strip().lower();
+				t2 = i['song_name'].split('.')[0].strip().lower();
 
-		if t in name.lower() or t1 in name.lower() or t2 in name.lower():
-			playcount = int(i['playcount']);
+				if t in name.lower() or t1 in name.lower() or t2 in name.lower():
+					playcount = int(i['playcount']);
+					break;
 			break;
-		break;
 
 	return playcount;
 
@@ -53,13 +53,13 @@ if __name__ == '__main__':
 
 		playcount = get_playcount(w[i]);
 		print playcount
-				f_new.append(get_playcount_bin(playcount));
+		f_new.append(get_playcount_bin(playcount));
 
 		f_final.append(f_new);
-		print len(f_final);
-		print len(f_final[0]);
+	
+	print len(f_final);
+	print len(f_final[0]);
 
-		for item in f_final:
-			print item
+	for item in f_final:
 		if item[-1] != 1:
-				print item;
+			print item;
