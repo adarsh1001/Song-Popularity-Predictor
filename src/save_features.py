@@ -1,4 +1,5 @@
 import os, json
+import numpy as np 
 from pyAudioAnalysis import audioFeatureExtractionMod as am 
 
 song_dir = 'temp';
@@ -44,7 +45,8 @@ if __name__ == '__main__':
 
 	[f, s, w] = am.dirWavFeatureExtractionNoAveraging('../%s/' % song_dir);
 
-	f_final = [];
+	X = [];
+	y = [];
 	for i in range(0, len(f)/30):
 		f_new = [];
 		f_here = f[i*30:(i+1)*30];
@@ -52,14 +54,9 @@ if __name__ == '__main__':
 			f_new.append(sum(k)/len(k));
 
 		playcount = get_playcount(w[i]);
-		print playcount
-		f_new.append(get_playcount_bin(playcount));
 
-		f_final.append(f_new);
+		y.append(get_playcount_bin(playcount));
+		X.append(f_new);
 	
-	print len(f_final);
-	print len(f_final[0]);
-
-	for item in f_final:
-		if item[-1] != 1:
-			print item;
+	np.savetxt('features.csv', X, delimiter=',');
+	np.savetxt('labels.csv', y, delimiter=',');
