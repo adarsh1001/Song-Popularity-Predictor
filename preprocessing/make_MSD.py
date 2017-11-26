@@ -274,7 +274,7 @@ def main():
                     for i in feat:
                         cnt+=1
                         outstring+=str(i)
-                        if (cnt!=feat_size)
+                        if (cnt!=feat_size):
                             outstring+=','
                     outstring+='\n'
                     f.write(outstring)
